@@ -5,7 +5,6 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
 SDL_Surface *surface;
 struct point
 {
@@ -222,7 +221,7 @@ Mix_Music *music;
 
 bool init()
 {
-    music = Mix_LoadMUS("new.mp3");
+    music = Mix_LoadMUS("Soon.wav");
     if (!music)
     {
         cout << "Error loading music: " << Mix_GetError() << endl;
@@ -235,11 +234,10 @@ bool init()
 int main(int agr, char *args[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) > 0)
     {
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-        return false;
+        printf("video and timer: %s\n", SDL_GetError());
     }
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
     {
@@ -251,18 +249,14 @@ int main(int agr, char *args[])
         system("pause");
         return 1;
     }
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) > 0)
-    {
-        printf("video and timer: %s\n", SDL_GetError());
-    }
     if (!(IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG)))
         printf("image: %s\n", SDL_GetError());
+
     SDL_Window *win;
     // SDL_Init(SDL_INIT_EVERYTHING);
     win = SDL_CreateWindow("CASTELVANIA", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     SDL_Renderer *rend = SDL_CreateRenderer(win, -1, render_flags);
-
     SDL_Rect m, l, nw, lf, lev;
     // int x_pos,y_pos,c=0;
     m.h = 100;
@@ -309,7 +303,6 @@ int main(int agr, char *args[])
         SDL_Quit();
         return 1;
     }
-
     e1.h = 50;
     e1.w = 50;
     /*SDL_RenderClear(rend);
@@ -322,7 +315,7 @@ int main(int agr, char *args[])
     int x_pos = 600;
     int s1 = 0, f = 15;
     int l6, l5, l8 = 50, f10;
-    SDL_Rect fuck, nw1, reply, cd, ru, ins, mm;
+    SDL_Rect fuck, nw1, reply, cd, ru, ins, mm, hsl, ys;
 
     surface = IMG_Load("midia/gola.png");
     if (!surface)
@@ -344,46 +337,45 @@ int main(int agr, char *args[])
         SDL_Quit();
         return 1;
     }
-
     SDL_Texture *redbul1 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/1.jpg");
+    surface = IMG_Load("midia/1.png");
     SDL_Texture *tex1;
     tex1 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/0.jpg");
+    surface = IMG_Load("midia/0.png");
     SDL_Texture *tex0;
     tex0 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/2.jpg");
+    surface = IMG_Load("midia/2.png");
     SDL_Texture *tex2;
     tex2 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/3.jpg");
+    surface = IMG_Load("midia/3.png");
     SDL_Texture *tex3;
     tex3 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/4.jpg");
+    surface = IMG_Load("midia/4.png");
     SDL_Texture *tex4;
     tex4 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/5.jpg");
+    surface = IMG_Load("midia/5.png");
     SDL_Texture *tex5;
     tex5 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/6.jpg");
+    surface = IMG_Load("midia/6.png");
     SDL_Texture *tex6;
     tex6 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/7.jpg");
+    surface = IMG_Load("midia/7.png");
     SDL_Texture *tex7;
     tex7 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/8.jpg");
+    surface = IMG_Load("midia/8.png");
     SDL_Texture *tex8;
     tex8 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
-    surface = IMG_Load("midia/9.jpg");
+    surface = IMG_Load("midia/9.png");
     SDL_Texture *tex9;
     tex9 = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
@@ -420,10 +412,17 @@ int main(int agr, char *args[])
     surface = IMG_Load("midia/MM.png");
     SDL_Texture *MM = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
+    surface = IMG_Load("midia/high.png");
+    SDL_Texture *high = SDL_CreateTextureFromSurface(rend, surface);
+    SDL_FreeSurface(surface);
+    surface = IMG_Load("midia/score.png");
+    SDL_Texture *score = SDL_CreateTextureFromSurface(rend, surface);
+    SDL_FreeSurface(surface);
+    surface = IMG_Load("midia/resume.png");
+    SDL_Texture *res = SDL_CreateTextureFromSurface(rend, surface);
+    SDL_FreeSurface(surface);
     int mousex, mousey, lfe = 0;
-
     init34();
-
     while (q4 != 1)
     {
         /*while(SDL_PollEvent(&e)!=0){
@@ -451,10 +450,8 @@ int main(int agr, char *args[])
                     }
             }
     }*/
-
         if (q4 == 0)
         {
-
             while (SDL_PollEvent(&e) != 0)
             {
                 switch (e.type)
@@ -657,7 +654,6 @@ int main(int agr, char *args[])
                 }
                 f10 = l6;
             }
-
             scar1 = scar;
             // SDL_RenderCopy(rend, back, NULL, &bac);
             // SDL_RenderCopy(rend, back, NULL, &bac);
@@ -801,7 +797,7 @@ int main(int agr, char *args[])
             cd.w = 300;
             cd.x = 100;
             cd.y = 100 + 100 + 100 + 50 + 50;
-            SDL_RenderCopy(rend, newgame, NULL, &nw);
+            SDL_RenderCopy(rend, res, NULL, &nw);
             SDL_RenderCopy(rend, HELP, NULL, &hp);
             SDL_RenderCopy(rend, QUITE, NULL, &qu);
             SDL_RenderCopy(rend, CD, NULL, &cd);
@@ -867,7 +863,6 @@ int main(int agr, char *args[])
             SDL_RenderCopy(rend, INS, NULL, &ins);
             SDL_RenderPresent(rend);
             SDL_Delay(1000 / 60);
-
             int buttons = SDL_GetMouseState(&mousex, &mousey);
             if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
             {
@@ -918,7 +913,6 @@ int main(int agr, char *args[])
                 }
             }
         }
-
         else if (q4 == 3)
         {
             SDL_RenderClear(rend);
@@ -946,7 +940,7 @@ int main(int agr, char *args[])
                 l6 = l6 / 10;
                 if (l5 == 1)
                 {
-                    cout << "q" << endl;
+                    // cout<<"q"<<endl;
                     fuck.h = 50;
                     fuck.w = 50;
                     fuck.x = 800 - l8;
@@ -1037,12 +1031,141 @@ int main(int agr, char *args[])
                 }
                 f10 = l6;
             }
+            int hs;
+            FILE *file;
+            file = fopen("hs.txt", "r");
+            fscanf(file, "%d", &hs);
+            fclose(file);
+            cout << "sda ";
+            cout << hs << endl;
+            file = fopen("hs.txt", "w");
+            if (hs < scar)
+            {
+                hs = scar;
+                fprintf(file, "%d", hs);
+            }
+            fclose(file);
+            hsl.h = 60;
+            hsl.w = 200;
+            hsl.x = 400;
+            hsl.y = 300 - 60 - 60;
+            SDL_RenderCopy(rend, score, NULL, &hsl);
+            ys.h = 60;
+            ys.w = 200;
+            ys.x = 400;
+            ys.y = 300 - 60 - 60 - 60 - 60;
+            SDL_RenderCopy(rend, high, NULL, &ys);
+            l6 = hs;
+            scar1 = hs;
+            // SDL_Rect fuck;
+            // cout<<"q"<<" "<<scar<<" "<<scar1<<endl;
+            f10 = hs;
+            fuck.x = 800;
+            l8 = 50;
+            for (int i = 0; f10 > 0; i++)
+            {
+                l5 = l6 % 10;
+                l6 = l6 / 10;
+                if (l5 == 1)
+                {
+                    cout << "q" << endl;
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex1, NULL, &fuck);
+                }
+                else if (l5 == 0)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex0, NULL, &fuck);
+                }
+                else if (l5 == 2)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex2, NULL, &fuck);
+                }
+                else if (l5 == 3)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex3, NULL, &fuck);
+                }
+                else if (l5 == 4)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex4, NULL, &fuck);
+                }
+                else if (l5 == 5)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex5, NULL, &fuck);
+                }
+                else if (l5 == 6)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex6, NULL, &fuck);
+                }
+                else if (l5 == 7)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex7, NULL, &fuck);
+                }
+                else if (l5 == 8)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex8, NULL, &fuck);
+                }
+                else if (l5 == 9)
+                {
+                    fuck.h = 50;
+                    fuck.w = 50;
+                    fuck.x = 800 - l8;
+                    fuck.y = 300 - 60 - 60 - 60;
+                    l8 = l8 + 50;
+                    SDL_RenderCopy(rend, tex9, NULL, &fuck);
+                }
+                f10 = l6;
+            }
             // scar=0;
             mm.h = 100;
             mm.w = 100;
             mm.x = 450 + 100;
             mm.y = 300 + 100 + 50 + 50 + 50;
             SDL_RenderCopy(rend, MM, NULL, &mm);
+
             SDL_RenderPresent(rend);
             SDL_Delay(100 / 60);
             int mousex, mousey;
@@ -1100,7 +1223,6 @@ int main(int agr, char *args[])
             }
         }
     }
-
     SDL_DestroyRenderer(rend);
     SDL_DestroyWindow(win);
     Mix_FreeMusic(music);
